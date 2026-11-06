@@ -1,0 +1,171 @@
+ <div class="search-bar">
+        <input type="text" v-model="searchQuery" @input="searchUsers"
+               v-if="activeInput === 'searchQueryIdTransaction.user_id'" placeholder="Search by user information">
+        <input type="text" class="by-transaction" v-model="searchQueryIdTransaction.transaction_id" v-else
+               @input="searchTransactions" placeholder="Search by transaction">
+        <button @click="toggleInputs">{{ buttonText }}</button>
+    </div>
+    <section class="data">
+        <div class="user-info">
+            <div class="top-bar">
+                <div class="user-id">ID</div>
+                <div class="user-email">email</div>
+            </div>
+            <div class="user" :class="['user-default', { 'user-selected': userSelected === user.id }]" :id="user.id"
+                 @click="toggleUser(user)" v-for="user in searchResults">
+                <p class="user-id" @click="getTransactionByUserId(user.id);">
+                    {{ user.id }}
+                </p>
+                <p class="user-email" @click="getTransactionByUserId(user.id);">
+                    {{ user.email }}
+                </p>
+                <span :class="['aside-visible', {'active': activeAside === user.id}]" class="info" @click="toggleAside(user.id);">i</span>
+                <aside :class="['aside-hidden', { 'aside-visible': activeAside === user.id }]">
+                    <div class="general">
+                        <p class="user-name">Name:<span>{{ user.username }}</span></p>
+                        <p class="user-name">Status:
+                            <span v-if="user.anonymous == true">anonim</span>
+                            <span v-else="user.anonymous == false">registered</span>
+                        </p>
+                        <p class="activation-date">Data of activation:
+                            <span v-if="user.account_link_date">{{ parsedDateVal }}</span>
+                            <span v-else>not activated</span>
+                        </p>
+                        <p class="auth-date">Data of authorization:
+                            <span>{{ parsedDateAuth }}</span>
+                        </p>
+                    </div>
+                    <div class="devices">
+                        <div class="platform">
+                            <p>Platform</p>
+                            <p v-for="dev in user.devices">{{ dev.model }}</p>
+                        </div>
+                        <div class="version">
+                            <p>Version OS</p>
+                            <p v-for="dev in user.devices">{{ dev.os }} {{ dev.os_version }}</p>
+                        </div>
+                        <div class="client">
+                            <p>Client</p>
+                            <p v-for="dev in user.devices">{{ dev.app_version }}</p>
+                        </div>
+                    </div>
+                    <button type="button" class="delete-btn" @click="modal = { show: true, user: user }">Delete</button>
+                </aside>
+            </div>
+        </div>
+        <div class="transaction-info">
+            <div class="top-bar">
+                <div class="user-id">Product ID:</div>
+                <div class="user-email">Consumable</div>
+            </div>
+            <div class="transaction-stack">
+                <div v-if="!this.userSelected" v-for="transaction in searchTransactionResults"
+                     :key="productId">
+                    <div class="stack-wrap" >
+                        <div class="transaction" :id="transaction.user_id" :key="transaction.transaction_id">
+                            <p class="transaction-id">{{ transaction.product_id }}</p>
+                            <div class="transaction-detail">
+                                <p class="quantity" v-else>{{ transaction.quantity }}</p>
+                                <div class="transaction-grid">
+                                    <p class="type">Type: </p>
+                                    <span>placeholder</span>
+                                    <p class="product-id">Transaction ID: </p>
+                                    <span>{{ transaction.transaction_id }}</span>
+                                    <p class="store">Store: </p>
+                                    <span>{{ transaction.store }}</span>
+                                    <p class="purchase-date">Purchase date: </p>
+                                    <span>{{ transaction.purchase_data }}</span>
+                                </div>
+                                <span class="info" :class="{'active': activeTransactions === transaction.transaction_id}"
+                                      @click="toggleTransaction(transaction); fetchQueryById(transaction.user_id)">i</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div :class="productId" v-if="this.userSelected"
+                     v-for="(groupedTransactions, productId) in groupedTransactionResults" :key="productId">
+                    <div class="stack-wrap" @click="toggleSelectedGroup(productId)"
+                         :class="{ 'selected': isSelectedGroup(productId) }">
+                        <div class="transaction" :id="transaction.user_id" v-for="(transaction, index) in groupedTransactions"
+                             :key="transaction.transaction_id">
+                            <p class="transaction-id">{{ transaction.product_id }}</p>
+                            <div class="transaction-detail">
+                                <p class="quantity tooltip" v-if="index === 0">{{ groupedTransactions.length }}
+                                    <span class="tooltip-text">Number of purchases made by the user</span>
+                                </p>
+                                <p class="quantity" v-else>{{ transaction.quantity }}</p>
+                                <div class="transaction-grid">
+                                    <p class="type">Type: </p>
+                                    <span>placeholder</span>
+                                    <p class="product-id">Transaction ID: </p>
+                                    <span>{{ transaction.transaction_id }}</span>
+                                    <p class="store">Store: </p>
+                                    <span>{{ transaction.store }}</span>
+                                    <p class="purchase-date">Purchase date: </p>
+                                    <span>{{ transaction.purchase_data }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- delete info -->
+    <div class="delete" :class="{ deleted: isDeleted }">User <strong>{{ searchQueryIdTransaction.user_id }}</strong>
+        successfully deleted</div>
+    <!-- confirmation modal  -->
+    <div v-if="modal.show" class="modal">
+        <div class="modal-content">
+            <h2>Are you sure you want to delete this user?</h2>
+            <p>User ID: <span>{{ modal.user.id }}</span></p>
+            <p>User Email: <span>{{ modal.user.email }}</span></p>
+            <div class="buttons">
+                <button class="modal-button accept" @click="confirmDelete">Delete</button>
+                <button class="modal-button cancel" @click="cancelDelete">Cancel</button>
+            </div>
+        </div>
+    </div>
+    <!-- end modal -->
+ <script>
+     const pageUrls = window.location.href;
+     let pageName = document.querySelector('.toolbar h1');
+     let serverName = document.querySelector('.server-name');
+     let logIn, transactions, users, userDel;
+
+     if (pageUrls.indexOf("users-data") > -1) {
+         pageName.textContent = 'Users & transactions';
+     } else if(pageUrls.indexOf("users-energy") > -1) {
+         pageName.textContent = 'Energy and Coins';
+     } else if(pageUrls.indexOf("exp") > -1){
+         pageName.textContent = 'EXP';
+     }
+
+     if (pageUrls.indexOf("localhost") > -1 || pageUrls.indexOf("stage") > -1) {
+         // ===== DEV server
+         serverName.innerHTML = 'DEV <span>server</span>';
+         logIn = 'https://prod-auth.langly.ai/api/accounts/login/';
+         transactions = 'https://prod-gateway.langly.ai/api/purchases/transaction/';
+         users = 'https://prod-auth.langly.ai/api/accounts/users/';
+         userDel = `https://prod-auth.langly.ai/api/accounts/delete/`;
+     } else if (pageUrls.indexOf("development") > -1) {
+         // ===== RC server
+         // serverName.innerHTML = 'RC <span>server</span>';
+         // logIn = 'https://auth-microservice-release-candidate.langly.ai/api/accounts/login/';
+         // transactions = 'https://gateway-microservice-release-candidate.langly.ai/api/purchases/transaction/';
+         // users = 'https://auth-microservice-release-candidate.langly.ai/api/accounts/users/';
+         // userDel = `https://auth-microservice-release-candidate.langly.ai/api/accounts/delete/`;
+         logIn = 'https://prod-auth.langly.ai/api/accounts/login/';
+         transactions = 'https://prod-gateway.langly.ai/api/purchases/transaction/';
+         users = 'https://prod-auth.langly.ai/api/accounts/users/';
+         userDel = `https://prod-auth.langly.ai/api/accounts/delete/`;
+     } else if (pageUrls.indexOf("api") > -1) {
+         // ===== PROD server
+         serverName.innerHTML = 'PROD <span>server</span>';
+         logIn = 'https://auth-microservice-production.langly.ai/api/accounts/login/';
+         transactions = 'https://gateway-microservice-production.langly.ai/api/purchases/transaction/';
+         users = 'https://auth-microservice-production.langly.ai/api/accounts/users/';
+         userDel = `https://auth-microservice-production.langly.ai/api/accounts/delete/`;
+     }
+
+ </script>

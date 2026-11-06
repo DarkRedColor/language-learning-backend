@@ -1,0 +1,34 @@
+<div class="adventure" :id="episode.id" :style="getEpisodeImg(episode.image)">
+    <div class="control-top" draggable="true"></div>
+    <template v-for="chapter in episode.chapters.slice().reverse()">
+        <template v-if="chapter.type === 2 || chapter.type === 0">
+            <div :class="`img ${chapter.id} ${chapter.type === 2 ? 'intro' : ''}`" :id="chapter.id" :style="getImgStyle(chapter.thumbnail, chapter.transform)">
+                <span>{{ chapter.description }}</span>
+            </div>
+        </template>
+        <template v-if="chapter.type === 1">
+            <div v-if="chapter.quiz_scenes.length > 0" :class="`chapter quiz ${chapter.id}`" :style="getQuizStyle(chapter.quiz_scenes[0].transform)"
+                 :id="chapter.quiz_scenes[0].id">
+            </div>
+        </template>
+        <template v-else>
+            <template v-if="chapter.type === 2" v-for="scene in chapter.intro_scenes.slice().reverse()">
+                <div
+                        :class="`chapter intro ${chapter.id}`"
+                        :style="getSceneStyle(scene.transform)"
+                        :id="scene.id"
+                ></div>
+            </template>
+            <template v-else="chapter.type === 1" v-for="scene in chapter.default_scenes.slice().reverse()">
+                <div
+                        :class="`chapter ${chapter.id}`"
+                        :style="getSceneStyle(scene.transform)"
+                        :id="scene.id"
+                ></div>
+            </template>
+        </template>
+    </template>
+    <svg id="svgContainer" width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
+    <div class="control-bottom" draggable="true"></div>
+</div>
+

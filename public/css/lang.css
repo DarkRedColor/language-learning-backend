@@ -1,0 +1,133 @@
+:root {
+    --color-m: #282828;
+    --color-s: #506dec;
+    --local: #bba8ff;
+    --off-w: #f1f1f1;
+    --red: #eb5757;
+    --off-red: rgba(235, 87, 87, 0.35);
+    --green: #81bf88;
+    --off-green: rgba(129, 191, 136, 0.35);
+    --shadow: 0 0 4px 0 rgba(0, 0, 0, 0.1);
+    --line: #ecdaff;
+    --action: #fef5e8;
+    --notification: #c0d8ff;
+    --choice: #ffd3e4;
+}
+
+/* Create area */
+
+.option-area {
+    border-radius: 1rem 1rem 0 0;
+    overflow: hidden;
+    display: flex;
+    column-gap: 33%;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    height: 4rem;
+}
+
+.option-area > * {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 4rem;
+    justify-content: space-between;
+}
+
+.option-area .info .name {
+    font-size: 1.3rem;
+    margin-left: 1rem;
+    line-height: 4rem;
+}
+
+.option-area .info .lang-name,
+.option-area .lang-check {
+    position: relative;
+    font-size: 1.3rem;
+    font-weight: 600;
+    line-height: 4rem;
+    z-index: 1;
+}
+
+.option-area .un-lock.ui.icon.button,
+.option-area .lock.ui.icon.button {
+    margin: 0;
+    border-radius: 0;
+    color: #fff;
+    font-size: 1.7rem;
+    padding: 1rem;
+    z-index: 1;
+}
+
+.lang-check.lock::before {
+    content: "";
+    position: absolute;
+    width: 33vw;
+    height: 200%;
+    background: var(--off-red);
+    left: -10vw;
+    z-index: 0;
+}
+
+.lang-check.unlock::before {
+    content: "";
+    position: absolute;
+    width: 33vw;
+    height: 200%;
+    background: var(--off-green);
+    left: -10vw;
+    z-index: 0;
+}
+
+.field.file label i {
+    position: relative;
+    overflow: hidden;
+    font-size: 1.5rem;
+    background: var(--off-w);
+    color: var(--color-m);
+    padding: 2rem;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all .3s;
+    cursor: pointer;
+    box-shadow: 0 0 0 1rem transparent;
+}
+
+.label .previewImg[src*="data"],
+.label .previewImg[src*="http"] {
+    position: inherit;
+}
+
+.previewImg[src*="data"], .previewImg[src*="http"] {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: filter .3s;
+}
+
+.previewImg[src*="data"]:hover, .previewImg[src*="http"]:hover {
+    filter: brightness(1.1);
+}
+
+.hover .upload.icon {
+    box-shadow: 0 0 0 1rem var(--off-w);
+    background: var(--color-m);
+}
+
+.field.file label i:hover {
+    background: var(--color-m);
+    color: var(--off-w);
+}
+
+.dis-img i {
+    margin-left: .3rem;
+    font-size: 1.2em;
+}
+
+.edit-area .two.fields {
+    align-items: center;
+    column-gap: 3rem;
+}

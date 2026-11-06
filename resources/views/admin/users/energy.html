@@ -1,0 +1,418 @@
+<section class="data">
+  <section class="energy-category">
+    <h1 class="global-category-name">ENERGY</h1>
+    <div class="column">
+      <h1 class="global-category-name">Free Users</h1>
+      <!-- Energy -->
+      <div class="global-energy" v-if="dataEnergy">
+        <p class="info category-name">Global Energy</p>
+        <p class="info">Max Energy</p>
+        <div class="param max-energy">
+          <button @click="dataEnergy.energy_max_quantities = Math.max(dataEnergy.energy_max_quantities - 1, 0), this.energyChanged = true;"
+                  class="neg"> -
+          </button>
+          <p>{{ dataEnergy.energy_max_quantities }}</p>
+          <button @click="dataEnergy.energy_max_quantities++, this.energyChanged = true;" class="pos"> +</button>
+        </div>
+        <p class="info">Refresh Period</p>
+        <div class="param period">
+          <input @change="this.energyChanged = true;" class="hours" type="text"
+                 v-model="dataEnergy.energy_restoring_period_hour"/>
+          <p>:</p>
+          <input @change="this.energyChanged = true;" class="minutes" type="text"
+                 v-model="dataEnergy.energy_restoring_period_min"/>
+        </div>
+        <p class="info">Mistakes</p>
+        <div class="param mistakes">
+          <button @click="dataEnergy.energy_quantities_for_decrease_after_mistake = Math.max(dataEnergy.energy_quantities_for_decrease_after_mistake - 1, 0), this.energyChanged = true;"
+                  class="neg"> -
+          </button>
+          <p>{{ dataEnergy.energy_quantities_for_decrease_after_mistake }}</p>
+          <button @click="dataEnergy.energy_quantities_for_decrease_after_mistake++, this.energyChanged = true;" class="pos">
+            +
+          </button>
+        </div>
+        <div class="action-buttons">
+          <button :disabled="!energyChanged" @click="energyModal = true" class="save">Save</button>
+        </div>
+      </div>
+      <!-- Type Fast -->
+      <div class="type-fast" v-if="dataEnergy">
+        <p class="info category-name">Type Fast</p>
+        <p class="info">Max Count</p>
+        <div class="param max-energy">
+          <button @click="dataEnergy.type_fast_max_attempts = Math.max(dataEnergy.type_fast_max_attempts - 1, 0), this.typeFastChanged = true;"
+                  class="neg"> -
+          </button>
+          <p>{{ dataEnergy.type_fast_max_attempts }}</p>
+          <button @click="dataEnergy.type_fast_max_attempts++, this.typeFastChanged = true;" class="pos"> +</button>
+        </div>
+        <p class="info">Refresh Period</p>
+        <div class="param period">
+          <input @change="this.typeFastChanged = true;" class="hours" type="text"
+                 v-model="dataEnergy.type_fast_restoring_period_hour"/>
+          <p>:</p>
+          <input @change="this.typeFastChanged = true;" class="minutes" type="text"
+                 v-model="dataEnergy.type_fast_restoring_period_min"/>
+        </div>
+        <p class="info">Energy</p>
+        <div class="param energy">
+          <button @click="dataEnergy.type_fast_amount_energy_increase = Math.max(dataEnergy.type_fast_amount_energy_increase - 1, 0), this.typeFastChanged = true;"
+                  class="neg"> -
+          </button>
+          <p>{{ dataEnergy.type_fast_amount_energy_increase }}</p>
+          <button @click="dataEnergy.type_fast_amount_energy_increase++, this.typeFastChanged = true;" class="pos"> +</button>
+        </div>
+        <div class="action-buttons">
+          <button :disabled="!typeFastChanged" @click="typeFastModal = true" class="save">Save</button>
+        </div>
+      </div>
+      <!-- Tell a friend -->
+      <div class="tell-friend" v-if="dataEnergy">
+        <p class="info category-name">Tell a friend</p>
+        <p class="info">Max Count</p>
+        <div class="param max-energy">
+          <button @click="dataEnergy.tell_friend_max_invitation = Math.max(dataEnergy.tell_friend_max_invitation - 1, 0), this.tellFriendChanged = true;"
+                  class="neg"> -
+          </button>
+          <p>{{ dataEnergy.tell_friend_max_invitation }}</p>
+          <button @click="dataEnergy.tell_friend_max_invitation++, this.tellFriendChanged = true;" class="pos"> +</button>
+        </div>
+        <p class="info">Refresh Period</p>
+        <div class="param period">
+          <input @change="this.tellFriendChanged = true;" class="hours" type="text"
+                 v-model="dataEnergy.tell_a_fiend_restoring_period_hour"/>
+          <p>:</p>
+          <input @change="this.tellFriendChanged = true;" class="minutes" type="text"
+                 v-model="dataEnergy.tell_a_fiend_restoring_period_min"/>
+        </div>
+        <p class="info">Energy</p>
+        <div class="param energy">
+          <button @click="dataEnergy.tell_a_fiend_amount_energy_increase = Math.max(dataEnergy.tell_a_fiend_amount_energy_increase - 1, 0), this.tellFriendChanged = true;"
+                  class="neg"> - </button>
+          <p>{{ dataEnergy.tell_a_fiend_amount_energy_increase }}</p>
+          <button @click="dataEnergy.tell_a_fiend_amount_energy_increase++, this.tellFriendChanged = true;" class="pos"> + </button>
+        </div>
+        <div class="action-buttons">
+          <button :disabled="!tellFriendChanged" @click="tellFriendModal = true" class="save">Save</button>
+        </div>
+      </div>
+      <!-- ADs-->
+      <div class="ads" v-if="adsData">
+        <p class="info category-name">ADs</p>
+        <p class="info">Max Count</p>
+        <div class="param max-energy">
+          <button @click="adsData.number_of_impressions = Math.max(adsData.number_of_impressions - 1, 0), this.adsChanged = true;" class="neg"> -</button>
+          <p>{{ adsData.number_of_impressions }}</p>
+          <button @click="adsData.number_of_impressions++, this.adsChanged = true;" class="pos"> +</button>
+        </div>
+        <p class="info">Refresh Period</p>
+        <div class="param period">
+          <input @change="this.adsChanged = true;" class="hours" type="text"
+                 v-model="adsData.replenish_time_hour"/>
+          <p>:</p>
+          <input @change="this.adsChanged = true;" class="minutes" type="text"
+                 v-model="adsData.replenish_time_min"/>
+        </div>
+        <p class="info">Energy</p>
+        <div class="param energy">
+          <button @click="adsData.energy_increase = Math.max(adsData.energy_increase - 1, 0), this.adsChanged = true;" class="neg"> -</button>
+          <p>{{ adsData.energy_increase }}</p>
+          <button @click="adsData.energy_increase++, this.adsChanged = true;" class="pos"> +</button>
+
+        </div>
+        <div class="action-buttons">
+          <button :disabled="!adsChanged" @click="adsModal = true" class="save">Save</button>
+        </div>
+      </div>
+    </div>
+    <div class="column">
+      <h1 class="global-category-name">Buyers Users</h1>
+      <!-- Energy PREMIUM-->
+      <div class="global-energy" v-if="energyDataPremium">
+        <p class="info category-name">Global Energy PREMIUM</p>
+        <p class="info">Max Energy</p>
+        <div class="param max-energy">
+          <button @click="energyDataPremium.energy_max_quantities = Math.max(energyDataPremium.energy_max_quantities - 1, 0), this.energyPremiumChanged = true;" class="neg">-</button>
+          <p>{{ energyDataPremium.energy_max_quantities }}</p>
+          <button @click="energyDataPremium.energy_max_quantities++,  this.energyPremiumChanged = true;" class="pos">+</button>
+        </div>
+        <p class="info">Refresh Period</p>
+        <div class="param period">
+          <input @change="this.energyPremiumChanged = true" class="hours" type="text"
+                 v-model="energyDataPremium.energy_restoring_period_hour"/>
+          <p>:</p>
+          <input @change="this.energyPremiumChanged = true" class="minutes" type="text"
+                 v-model="energyDataPremium.energy_restoring_period_min"/>
+        </div>
+        <p class="info">Mistakes</p>
+        <div class="param mistakes">
+          <button @click="energyDataPremium.energy_quantities_for_decrease_after_mistake = Math.max(energyDataPremium.energy_quantities_for_decrease_after_mistake - 1, 0), this.energyPremiumChanged = true;" class="neg">-</button>
+          <p>{{ energyDataPremium.energy_quantities_for_decrease_after_mistake }}</p>
+          <button @click="energyDataPremium.energy_quantities_for_decrease_after_mistake++,  this.energyPremiumChanged = true;" class="pos">+</button>
+        </div>
+        <div class="action-buttons">
+          <button :disabled="!energyPremiumChanged" @click="energyPremiumModal = true" class="save">Save</button>
+        </div>
+      </div>
+      <!-- Offer -->
+      <div class="global-energy" v-if="offerData">
+        <p class="info category-name">Offer</p>
+        <p class="info">Energy</p>
+        <div class="param max-energy">
+          <button @click="offerData.amount = Math.max(offerData.amount - 1, 0), this.offerChanged = true;" class="neg"> -</button>
+          <p>{{ offerData.amount }}</p>
+          <button @click="offerData.amount++,  this.offerChanged = true;" class="pos"> +</button>
+        </div>
+        <div class="action-buttons">
+          <button :disabled="!offerChanged" @click="offerModal = true" class="save">Save</button>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="coins-category">
+    <h1 class="global-category-name">COINS</h1>
+    <div class="column">
+      <!-- Global Coins -->
+      <div class="global-coins" v-if="coinsData">
+        <p class="info category-name">Global Coins</p>
+        <p class="info">For answer</p>
+        <div class="param max-energy">
+          <button @click="coinsData.coins_per_correct_answer = Math.max(coinsData.coins_per_correct_answer - 1, 0), this.globalCoinsChanged = true;"
+                  class="neg">-</button>
+          <input @change="this.globalCoinsChanged = true;" type="text" v-model="coinsData.coins_per_correct_answer"/>
+          <button @click="coinsData.coins_per_correct_answer++, this.globalCoinsChanged = true;" class="pos"> +</button>
+        </div>
+        <p class="info">For theory</p>
+        <div class="param energy">
+          <button @click="coinsData.coins_reward_theory = Math.max(coinsData.coins_reward_theory - 1, 0), this.globalCoinsChanged = true;"
+                  class="neg">-</button>
+          <input @change="this.globalCoinsChanged = true;" type="text" v-model="coinsData.coins_reward_theory"/>
+          <button @click="coinsData.coins_reward_theory++, this.globalCoinsChanged = true;" class="pos"> +</button>
+        </div>
+        <p class="info">For story</p>
+        <div class="param energy">
+          <button @click="coinsData.coins_reward_dialog = Math.max(coinsData.coins_reward_dialog - 1, 0), this.globalCoinsChanged = true;"
+                  class="neg">-</button>
+          <input @change="this.globalCoinsChanged = true;" type="text" v-model="coinsData.coins_reward_dialog"/>
+          <button @click="coinsData.coins_reward_dialog++, this.globalCoinsChanged = true;" class="pos"> +</button>
+        </div>
+        <p class="info">Combo Length</p>
+        <div class="param energy">
+          <button @click="coinsData.correct_answers_required_combo = Math.max(coinsData.correct_answers_required_combo - 1, 0), this.globalCoinsChanged = true;"
+                  class="neg">-</button>
+          <input @change="this.globalCoinsChanged = true;" type="text"
+                 v-model="coinsData.correct_answers_required_combo"/>
+          <button @click="coinsData.correct_answers_required_combo++, this.globalCoinsChanged = true;" class="pos"> +
+          </button>
+        </div>
+        <p class="info">For combo</p>
+        <div class="param energy">
+          <button @click="coinsData.coins_reward_combo = Math.max(coinsData.coins_reward_combo - 1, 0), this.globalCoinsChanged = true;"
+                  class="neg">-</button>
+          <input @change="this.globalCoinsChanged = true;" type="text" v-model="coinsData.coins_reward_combo"/>
+          <button @click="coinsData.coins_reward_combo++, this.globalCoinsChanged = true;" class="pos"> +</button>
+        </div>
+        <div class="action-buttons">
+          <button :disabled="!globalCoinsChanged" @click="globalCoinsModal = true" class="save">Save</button>
+        </div>
+      </div>
+      <!-- Gifts -->
+      <div class="gifts-data" v-if="">
+        <p class="info category-name">Gifts</p>
+        <p class="info">Count coin</p>
+        <div class="param gift-amount">
+          <button @click="decrementGiftCount" class="neg">-</button>
+          <input type="number" v-model="giftCount" value="60"/>
+          <button @click="incrementGiftCount" class="pos">+</button>
+        </div>
+        <p class="info">User</p>
+        <div class="param find-user">
+          <input type="text" v-model="searchQuery" @input="searchUsers" @paste="searchUsers"
+                 @change="handleInputChange" class="user-search" placeholder="Type here any email or id">
+        </div>
+        <ul v-if="searchResults.length > 0" hidden>
+          <li v-for="user in searchResults" :key="user.id" @click="selectUser(user)">
+            {{ user.id }} - {{ user.email }}
+          </li>
+        </ul>
+        <div class="action-buttons">
+          <button :disabled="!giftsChanged" @click="postCoinsGifts()" class="save">Send</button>
+        </div>
+      </div>
+
+    </div>
+    <div class="column">
+      <!-- Currency exchange -->
+      <div class="exchange" v-if="dataEnergy">
+        <p class="info category-name">Currency Exchange</p>
+        <p class="info">Coins</p>
+        <div class="param exchange-coins">
+          <button @click="coinsData.exchange_rate = Math.max(coinsData.exchange_rate - 1, 0), this.exchangeChanged = true;"
+                  class="neg">
+            -
+          </button>
+          <input @change="this.exchangeChanged = true;" maxlength="4" size="4" type="text"
+                 v-model="coinsData.exchange_rate"/>
+          <button @click="coinsData.exchange_rate++, this.exchangeChanged = true;" class="pos"> +</button>
+        </div>
+        <p class="info">Energy</p>
+        <div class="param exchange-energy">
+          <button class="neg" disabled> -</button>
+          <p>1</p>
+          <button class="pos" disabled> +</button>
+        </div>
+        <div class="action-buttons">
+          <button :disabled="!exchangeChanged" @click="exchangeModal = true" class="save">Save</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+</section>
+
+<!-- confirmation Energy  -->
+<div class="modal" v-if="energyModal">
+  <div class="modal-content">
+    <h2>Are you sure you want to save <strong>Energy</strong> changes?</h2>
+    <div class="action-buttons">
+      <button @click="postEnergy()" class="modal-button accept">Accept</button>
+      <button @click="energyModal = false" class="modal-button cancel">Cancel</button>
+    </div>
+  </div>
+</div>
+<!-- end modal -->
+<!-- confirmation TypeFast  -->
+<div class="modal" v-if="typeFastModal">
+  <div class="modal-content">
+    <h2>Are you sure you want to save <strong>Type Fast</strong> changes?</h2>
+    <div class="action-buttons">
+      <button @click="postTypeFast()" class="modal-button accept">Accept</button>
+      <button @click="typeFastModal = false" class="modal-button cancel">Cancel</button>
+    </div>
+  </div>
+</div>
+<!-- end modal -->
+<!-- confirmation TellFriend  -->
+<div class="modal" v-if="tellFriendModal">
+  <div class="modal-content">
+    <h2>Are you sure you want to save <strong>Tell a Friend</strong> changes?</h2>
+    <div class="action-buttons">
+      <button @click="postTellFriend()" class="modal-button accept">Accept</button>
+      <button @click="tellFriendModal = false" class="modal-button cancel">Cancel</button>
+    </div>
+  </div>
+</div>
+<!-- end modal -->
+<!-- confirmation ADs  -->
+<div class="modal" v-if="adsModal">
+  <div class="modal-content">
+    <h2>Are you sure you want to save <strong>ADs</strong> changes?</h2>
+    <div class="action-buttons">
+      <button @click="postAds()" class="modal-button accept">Accept</button>
+      <button @click="adsModal = false" class="modal-button cancel">Cancel</button>
+    </div>
+  </div>
+</div>
+<!-- end modal -->
+<!-- confirmation globalEnergyPremium  -->
+<div class="modal" v-if="energyPremiumModal">
+  <div class="modal-content">
+    <h2>Are you sure you want to save <strong>Global Energy Premium</strong> changes?</h2>
+    <div class="action-buttons">
+      <button @click="postDataPremium()" class="modal-button accept">Accept</button>
+      <button @click="energyPremiumModal = false" class="modal-button cancel">Cancel</button>
+    </div>
+  </div>
+</div>
+<!-- end modal -->
+<!-- confirmation offer  -->
+<div class="modal" v-if="offerModal">
+  <div class="modal-content">
+    <h2>Are you sure you want to save <strong>Offer</strong> changes?</h2>
+    <div class="action-buttons">
+      <button @click="postOffer()" class="modal-button accept">Accept</button>
+      <button @click="offerModal = false" class="modal-button cancel">Cancel</button>
+    </div>
+  </div>
+</div>
+<!-- end modal -->
+<!-- confirmation GlobalCoins  -->
+<div class="modal" v-if="globalCoinsModal">
+  <div class="modal-content">
+    <h2>Are you sure you want to save <strong>Global Coins</strong> changes?</h2>
+    <div class="action-buttons">
+      <button @click="postGlobalCoins()" class="modal-button accept">Accept</button>
+      <button @click="globalCoinsModal = false" class="modal-button cancel">Cancel</button>
+    </div>
+  </div>
+</div>
+<!-- end modal -->
+<!-- confirmation ExchangeCoins  -->
+<div class="modal" v-if="exchangeModal">
+  <div class="modal-content">
+    <h2>Are you sure you want to save <strong>Exchange Coins</strong> changes?</h2>
+    <div class="action-buttons">
+      <button @click="postExchange()" class="modal-button accept">Accept</button>
+      <button @click="exchangeModal = false" class="modal-button cancel">Cancel</button>
+    </div>
+  </div>
+</div>
+<!-- end modal -->
+<!--actions info-->
+<div :class="{ save: dataSaved }" class="save-info">data saved</div>
+<script>
+    const pageUrls = window.location.href;
+    let pageName = document.querySelector('.toolbar h1');
+    let serverName = document.querySelector('.server-name');
+    let logIn, energy, coins, ads, offer, gifts, users;
+
+    if (pageUrls.indexOf("users-data") > -1) {
+        pageName.textContent = 'Users & transactions';
+    } else if(pageUrls.indexOf("users-energy") > -1) {
+        pageName.textContent = 'Energy and Coins';
+    } else if(pageUrls.indexOf("exp") > -1){
+        pageName.textContent = 'EXP';
+    }
+
+    if (pageUrls.indexOf("localhost") > -1 || pageUrls.indexOf("stage") > -1) {
+        // ===== DEV server
+        serverName.innerHTML = 'DEV <span>server</span>';
+        logIn = 'https://prod-auth.langly.ai/api/accounts/login/';
+        energy = 'https://prod-energy.langly.ai/api/energy/energy-parameters';
+        ads = 'https://prod-energy.langly.ai/api/energy/advertising-parameters';
+        coins = 'https://prod-energy.langly.ai/api/energy/coin-parameters/';
+        offer = 'https://prod-gateway.langly.ai/api/purchases/app-info/';
+        users = 'https://prod-auth.langly.ai/api/accounts/users/';
+        gifts = 'https://prod-energy.langly.ai/api/energy/accrual-coins-and-energy/';
+    } else if (pageUrls.indexOf("development") > -1) {
+        // ===== RC server
+        serverName.innerHTML = 'RC <span>server</span>';
+        // logIn = 'https://auth-microservice-release-candidate.langly.ai/api/accounts/login/';
+        // energy = 'https://socks-microservice-release-candidate.langly.ai/api/energy/energy-parameters';
+        // ads = 'https://socks-microservice-release-candidate.langly.ai/api/energy/advertising-parameters';
+        // coins = 'https://socks-microservice-release-candidate.langly.ai/api/energy/coin-parameters/';
+        // offer = 'https://gateway-microservice-release-candidate.langly.ai/api/purchases/app-info/';
+        // users = 'https://auth-microservice-release-candidate.langly.ai/api/accounts/users/';
+        // gifts = 'https://socks-microservice-release-candidate.langly.ai/api/energy/accrual-coins-and-energy/';
+        logIn = 'https://prod-auth.langly.ai/api/accounts/login/';
+        energy = 'https://prod-energy.langly.ai/api/energy/energy-parameters';
+        ads = 'https://prod-energy.langly.ai/api/energy/advertising-parameters';
+        coins = 'https://prod-energy.langly.ai/api/energy/coin-parameters/';
+        offer = 'https://prod-gateway.langly.ai/api/purchases/app-info/';
+        users = 'https://prod-auth.langly.ai/api/accounts/users/';
+        gifts = 'https://prod-energy.langly.ai/api/energy/accrual-coins-and-energy/';
+    } else if (pageUrls.indexOf("api") > -1) {
+        // ===== PROD server
+        serverName.innerHTML = 'PROD <span>server</span>';
+        logIn = 'https://auth-microservice-production.langly.ai/api/accounts/login/';
+        energy = 'https://socks-microservice-production.langly.ai/api/energy/energy-parameters';
+        ads = 'https://socks-microservice-production.langly.ai/api/energy/advertising-parameters';
+        coins = 'https://socks-microservice-production.langly.ai/api/energy/coin-parameters/';
+        offer = 'https://gateway-microservice-production.langly.ai/api/purchases/app-info/';
+        users = 'https://auth-microservice-production.langly.ai/api/accounts/users/';
+        gifts = 'https://socks-microservice-production.langly.ai/api/energy/accrual-coins-and-energy/';
+    }
+
+</script>

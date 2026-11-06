@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 82 33" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;">
+       <g id="kek">
+        <path d="M81.794,0c0.445,20.52 -15.854,12.947 -26.553,16.829c-6.456,2.497 -11.595,7.532 -14.21,13.921c-2.618,-6.392 -7.763,-11.427 -14.225,-13.921c-10.609,-3.882 -22.937,4.931 -26.553,-16.829" style="fill:none;stroke:#333;stroke-width:1.55px;"/>
+        <path d="M82,21.356c-7.32,0.017 -14.644,-2.521 -20.533,-7.612c-11.738,-10.151 -29.184,-10.151 -40.923,0c-5.891,5.094 -13.22,7.632 -20.544,7.612" style="fill:none;stroke:#333;stroke-width:2.04px;stroke-linejoin:round;"/>
+        <path d="M81.794,0c0.275,2.033 0.275,4.093 0,6.126c-0.158,1.942 -1.201,3.705 -2.83,4.783c-1.381,0.443 -2.86,0.49 -4.267,0.133c-7.009,-0.62 -10.373,7.632 -17.011,8.651c-2.468,0.168 -4.945,0.138 -7.409,-0.089c-4.845,0 -9.216,3.617 -9.216,11.146c0,-7.529 -4.445,-11.19 -9.217,-11.146c-2.463,0.227 -4.941,0.256 -7.409,0.089c-6.653,-1.019 -10.061,-9.271 -17.069,-8.651c-1.412,0.356 -2.896,0.31 -4.283,-0.133c-1.629,-1.08 -2.676,-2.84 -2.845,-4.783c-0.262,-2.034 -0.257,-4.093 0.015,-6.126" style="fill:none;stroke:#333;stroke-width:1.55px;"/>
+        <path d="M81.794,0c-4.534,3.617 -1.629,10.939 -6.223,12.504c-2.045,0.694 -4.178,-0.31 -6.268,-0.65c-3.292,-0.461 -6.605,0.694 -8.89,3.1c-1.908,1.992 -3.985,3.814 -6.209,5.448c-3.615,2.332 -8.891,0.723 -11.765,4.886c-0.979,1.654 -1.491,3.542 -1.482,5.462c0.003,-1.712 -0.514,-3.384 -1.482,-4.798c-2.859,-4.178 -8.149,-2.554 -11.78,-4.901c-2.186,-1.635 -4.233,-3.447 -6.119,-5.418c-2.284,-2.408 -5.598,-3.564 -8.891,-3.1c-2.104,0.34 -4.238,1.344 -6.283,0.65c-4.504,-1.58 -1.6,-9.566 -6.149,-13.183" style="fill:none;stroke:#333;stroke-width:1.55px;"/>
+    </g>
+    <g id="lights">
+        <path d="M8.781,12.033c1.733,0.276 2.916,1.908 2.64,3.641c-0.277,1.733 -1.908,2.916 -3.642,2.639c-1.733,-0.276 -2.915,-1.908 -2.639,-3.641c0.277,-1.733 1.908,-2.916 3.641,-2.639Z"/>
+        <path d="M22.868,16.828c1.695,-0.454 3.441,0.554 3.895,2.249c0.454,1.695 -0.554,3.441 -2.249,3.895c-1.695,0.454 -3.44,-0.554 -3.894,-2.249c-0.455,-1.695 0.553,-3.44 2.248,-3.895Z"/>
+        <path d="M41.782,4.516c1.748,0.16 3.037,1.708 2.878,3.456c-0.16,1.748 -1.708,3.038 -3.456,2.878c-1.748,-0.159 -3.037,-1.708 -2.878,-3.456c0.16,-1.748 1.708,-3.037 3.456,-2.878Z"/>
+        <path d="M57.936,16.515c1.748,0.163 3.034,1.715 2.871,3.462c-0.164,1.747 -1.715,3.034 -3.463,2.87c-1.747,-0.163 -3.033,-1.714 -2.87,-3.462c0.163,-1.747 1.715,-3.033 3.462,-2.87Z"/>
+        <path d="M71.256,9.882c1.673,-0.533 3.463,0.393 3.995,2.065c0.532,1.672 -0.393,3.462 -2.065,3.995c-1.673,0.532 -3.463,-0.393 -3.995,-2.066c-0.533,-1.672 0.393,-3.462 2.065,-3.994Z"/>
+        <g id="bulb">
+            <path id="bulb-bg" d="M13.877,21.32c-0.424,3.506 -3.657,5.995 -7.22,5.559c-3.563,-0.436 -6.107,-3.631 -5.683,-7.137c0.424,-3.506 3.657,-5.995 7.22,-5.559c1.712,0.209 3.271,1.079 4.338,2.417c1.065,1.339 1.55,3.037 1.345,4.72Z" style="fill:#d3d0cc;fill-rule:nonzero;"/>
+            <path id="light" d="M12.276,29.417c-3.59,1.939 -8.009,1.524 -11.195,-1.054c-3.185,-2.579 -4.511,-6.814 -3.358,-10.727c1.153,-3.915 4.559,-6.736 8.627,-7.15c5.548,-0.566 10.53,3.467 11.129,9.01c0.441,4.064 -1.614,7.98 -5.203,9.921Z" style="fill:url(#_Radial1);fill-rule:nonzero;"/>
+        </g>
+        <g id="bulb1" serif:id="bulb">
+            <path id="bulb-bg1" serif:id="bulb-bg" d="M31.308,23.231c1.043,3.374 -0.895,6.965 -4.326,8.02c-3.431,1.054 -7.057,-0.825 -8.099,-4.2c-1.043,-3.374 0.895,-6.965 4.326,-8.02c1.648,-0.506 3.426,-0.348 4.946,0.439c1.519,0.788 2.653,2.14 3.153,3.761Z" style="fill:#d3d0cc;fill-rule:nonzero;"/>
+            <path id="light1" serif:id="light" d="M33.012,31.186c-2.471,3.222 -6.629,4.655 -10.533,3.628c-3.904,-1.027 -6.789,-4.309 -7.302,-8.317c-0.515,-4.009 1.439,-7.951 4.95,-9.991c4.788,-2.781 10.894,-1.174 13.641,3.588c2.014,3.492 1.716,7.87 -0.756,11.092Z" style="fill:url(#_Radial2);fill-rule:nonzero;"/>
+        </g>
+        <g id="bulb2" serif:id="bulb">
+            <path id="bulb-bg2" serif:id="bulb-bg" d="M47.49,13.441c-0.188,3.527 -3.247,6.227 -6.831,6.031c-3.584,-0.196 -6.337,-3.213 -6.149,-6.739c0.188,-3.527 3.247,-6.227 6.831,-6.032c1.721,0.094 3.336,0.857 4.49,2.121c1.152,1.264 1.75,2.925 1.659,4.619Z" style="fill:#d3d0cc;fill-rule:nonzero;"/>
+            <path id="light2" serif:id="light" d="M46.413,21.6c-3.444,2.177 -7.87,2.062 -11.21,-0.288c-3.341,-2.351 -4.941,-6.474 -4.052,-10.448c0.891,-3.974 4.094,-7.013 8.115,-7.701c5.486,-0.94 10.71,2.736 11.673,8.211c0.706,4.016 -1.081,8.052 -4.526,10.226Z" style="fill:url(#_Radial3);fill-rule:nonzero;"/>
+        </g>
+        <g id="bulb3" serif:id="bulb">
+            <path id="bulb-bg3" serif:id="bulb-bg" d="M63.624,25.452c-0.195,3.526 -3.26,6.22 -6.843,6.016c-3.584,-0.204 -6.331,-3.227 -6.135,-6.753c0.195,-3.526 3.26,-6.22 6.844,-6.016c1.721,0.097 3.334,0.864 4.485,2.13c1.15,1.267 1.744,2.929 1.649,4.623Z" style="fill:#d3d0cc;fill-rule:nonzero;"/>
+            <path id="light3" serif:id="light" d="M62.482,33.551c-3.418,2.152 -7.804,2.028 -11.109,-0.311c-3.305,-2.341 -4.883,-6.441 -3.992,-10.384c0.89,-3.945 4.071,-6.956 8.057,-7.631c5.44,-0.921 10.608,2.742 11.549,8.181c0.692,3.988 -1.086,7.992 -4.505,10.145Z" style="fill:url(#_Radial4);fill-rule:nonzero;"/>
+        </g>
+        <g id="bulb4" serif:id="bulb">
+            <path id="bulb-bg4" serif:id="bulb-bg" d="M79.916,15.969c1.198,3.322 -0.571,6.999 -3.949,8.212c-3.379,1.212 -7.088,-0.498 -8.285,-3.82c-1.198,-3.322 0.571,-6.999 3.949,-8.212c1.623,-0.583 3.406,-0.507 4.961,0.209c1.553,0.717 2.75,2.015 3.324,3.611Z" style="fill:#d3d0cc;fill-rule:nonzero;"/>
+            <path id="light4" serif:id="light" d="M81.986,23.828c-2.321,3.333 -6.411,4.959 -10.359,4.119c-3.948,-0.842 -6.981,-3.986 -7.677,-7.962c-0.698,-3.979 1.074,-8.008 4.489,-10.21c4.658,-3.001 10.832,-1.685 13.795,2.941c2.174,3.392 2.076,7.778 -0.248,11.112Z" style="fill:url(#_Radial5);fill-rule:nonzero;"/>
+        </g>
+    </g>
+    <defs>
+        <radialGradient id="_Radial1" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(9.84056,-3.16988,3.13281,9.95701,7.42547,20.5302)">
+            <stop offset="0" style="stop-color:white;stop-opacity:1"/>
+            <stop offset="0.26" style="stop-color:rgb(245,156,112);stop-opacity:0.2">
+                <animate attributeName="stop-color"
+                        values="#FF5151;#C730C4;#3452FF;#3BE746;#E7D13B;#F1783B;#FF5151;" dur="7s" repeatCount="indefinite">
+                </animate>
+            </stop>
+            <stop offset="0.5" style="stop-color:rgb(241,120,59);stop-opacity:0.5">
+                <animate attributeName="stop-color"
+                        values="#FF5151;#C730C4;#3452FF;#3BE746;#E7D13B;#F1783B;#FF5151;" dur="7s" repeatCount="indefinite">
+                </animate>
+            </stop>
+            <stop offset="0.74" style="stop-color:rgb(245,155,110);stop-opacity:0.25">
+                <animate attributeName="stop-color"
+                        values="#FF5151;#C730C4;#3452FF;#3BE746;#E7D13B;#F1783B;#FF5151;" dur="7s" repeatCount="indefinite">
+                </animate>
+            </stop>
+            <stop offset="1" style="stop-color:white;stop-opacity:0"/>
+        </radialGradient>
+        <radialGradient id="_Radial2" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(9.73062,-3.13927,3.09781,9.86086,25.0955,25.1411)">
+            <stop offset="0" style="stop-color:white;stop-opacity:1"/>
+            <stop offset="0.26" style="stop-color:rgb(245,156,112);stop-opacity:0.2">
+                <animate attributeName="stop-color"
+                        values="#C730C4;#3452FF;#FF5151;#3BE746;#F1783B;#E7D13B;#C730C4;" dur="7s" repeatCount="indefinite">
+                </animate>
+            </stop>
+            <stop offset="0.5" style="stop-color:rgb(241,120,59);stop-opacity:0.5">
+                <animate attributeName="stop-color"
+                        values="#C730C4;#3452FF;#FF5151;#3BE746;#F1783B;#E7D13B;#C730C4;" dur="7s" repeatCount="indefinite">
+                </animate>
+            </stop>
+            <stop offset="0.74" style="stop-color:rgb(245,155,110);stop-opacity:0.25">
+                <animate attributeName="stop-color"
+                        values="#C730C4;#3452FF;#FF5151;#3BE746;#F1783B;#E7D13B;#C730C4;" dur="7s" repeatCount="indefinite">
+                </animate>
+            </stop>
+            <stop offset="1" style="stop-color:white;stop-opacity:0"/>
+        </radialGradient>
+        <radialGradient id="_Radial3" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(9.81943,-3.1614,3.12608,9.93035,41,13.0857)">
+            <stop offset="0" style="stop-color:white;stop-opacity:1"/>
+            <stop offset="0.26" style="stop-color:rgb(245,156,112);stop-opacity:0.2">
+                <animate attributeName="stop-color"
+                        values="#3452FF;#F1783B;#FF5151;#3BE746;#C730C4;#E7D13B;#3452FF;" dur="7s" repeatCount="indefinite">
+                </animate>
+            </stop>
+            <stop offset="0.5" style="stop-color:rgb(241,120,59);stop-opacity:0.5">
+                <animate attributeName="stop-color"
+                        values="#3452FF;#F1783B;#FF5151;#3BE746;#C730C4;#E7D13B;#3452FF;" dur="7s" repeatCount="indefinite">
+                </animate>
+            </stop>
+            <stop offset="0.74" style="stop-color:rgb(245,155,110);stop-opacity:0.25">
+                <animate attributeName="stop-color"
+                        values="#3452FF;#F1783B;#FF5151;#3BE746;#C730C4;#E7D13B;#3452FF;" dur="7s" repeatCount="indefinite">
+                </animate>
+            </stop>
+            <stop offset="1" style="stop-color:white;stop-opacity:0"/>
+        </radialGradient>
+        <radialGradient id="_Radial4" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(9.73062,-3.13927,3.09781,9.86086,57.135,25.0827)">
+            <stop offset="0" style="stop-color:white;stop-opacity:1"/>
+            <stop offset="0.26" style="stop-color:rgb(245,156,112);stop-opacity:0.2">
+                <animate attributeName="stop-color"
+                        values="#E7D13B;#FF5151;#3452FF;#C730C4;#F1783B;#3BE746;#E7D13B;" dur="7s" repeatCount="indefinite">
+                </animate>
+            </stop>
+            <stop offset="0.5" style="stop-color:rgb(241,120,59);stop-opacity:0.5">
+                <animate attributeName="stop-color"
+                        values="#E7D13B;#FF5151;#3452FF;#C730C4;#F1783B;#3BE746;#E7D13B;" dur="7s" repeatCount="indefinite">
+                </animate>
+            </stop>
+            <stop offset="0.74" style="stop-color:rgb(245,155,110);stop-opacity:0.25">
+                <animate attributeName="stop-color"
+                        values="#E7D13B;#FF5151;#3452FF;#C730C4;#F1783B;#3BE746;#E7D13B;" dur="7s" repeatCount="indefinite">
+                </animate>
+            </stop>
+            <stop offset="1" style="stop-color:white;stop-opacity:0"/>
+        </radialGradient>
+        <radialGradient id="_Radial5" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(9.73062,-3.13927,3.09781,9.86086,73.7994,18.1643)">
+            <stop offset="0" style="stop-color:white;stop-opacity:1"/>
+            <stop offset="0.26" style="stop-color:rgb(245,156,112);stop-opacity:0.2">
+                <animate attributeName="stop-color"
+                        values="#F1783B;#3452FF;#C730C4;#E7D13B;#3BE746;#FF5151;#F1783B;" dur="7s" repeatCount="indefinite">
+                </animate>
+            </stop>
+            <stop offset="0.5" style="stop-color:rgb(241,120,59);stop-opacity:0.5">
+                <animate attributeName="stop-color"
+                        values="#F1783B;#3452FF;#C730C4;#E7D13B;#3BE746;#FF5151;#F1783B;" dur="7s" repeatCount="indefinite">
+                </animate>
+            </stop>
+            <stop offset="0.74" style="stop-color:rgb(245,155,110);stop-opacity:0.25">
+                <animate attributeName="stop-color"
+                        values="#F1783B;#3452FF;#C730C4;#E7D13B;#3BE746;#FF5151;#F1783B;" dur="7s" repeatCount="indefinite">
+                </animate>
+            </stop>
+            <stop offset="1" style="stop-color:white;stop-opacity:0"/>
+        </radialGradient>
+    </defs>
+</svg>

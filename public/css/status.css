@@ -1,0 +1,105 @@
+/*.eye.icon{*/
+/*    color: var(--color-m);*/
+/*}*/
+#app.grid{
+    margin: 0;
+}
+#app{
+    padding: 0;
+}
+#app .row{
+    padding: 0;
+}
+#status-list{
+    box-shadow: 1px 0 0 0 #d4d4d5;
+    height: calc(100vh - 4rem);
+}
+#add_status{
+    /*margin-bottom: 1rem;*/
+}
+.dropdown-status{
+    opacity: 0;
+    overflow: hidden;
+    height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    border: 1px solid #e6e6e6;
+    border-top: none;
+    border-radius: 0 0 .7rem .7rem;
+    margin-top: -0.7rem;
+    transition: all .3s;
+}
+.dropdown-status.active{
+    opacity: 1;
+    padding: 1.5rem .5rem .5rem;
+    height: auto;
+}
+.dropdown-status button {
+    padding: .5rem;
+    background: none;
+    border: 1px solid rgba(34,36,38,.15);
+    border-radius: .5rem;
+    cursor: pointer;
+}
+.dropdown-status button.add-exp{
+    background-color: var(--intro);
+    opacity: .7;
+    transition: opacity .2s;
+}
+.dropdown-status button.add-coin{
+    background-color: var(--scene);
+    opacity: .7;
+    transition: opacity .2s;
+}
+.dropdown-status button:hover {
+    opacity: 1;
+}
+.head-list{
+    padding: 1rem 0 1rem;
+    margin-bottom: .5rem;
+}
+.ui.left.labeled.button.adv {
+    counter-increment: item;
+}
+.ui.left.labeled.button.adv a.ui.basic.label > span::before {
+    content: counter(item);
+    position: absolute;
+}
+.drag-placeholder {
+    opacity: 0.3;
+}
+.stat-exp a > span,
+.stat-coin a > span{
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 3.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1rem 0 0 1rem;
+}
+.stat-exp a > span,
+.search-area.stat-exp{
+    background-color: var(--intro);
+}
+.stat-coin a > span,
+.search-area.stat-coin{
+    background-color: var(--scene);
+}
+.highlighted {
+    animation: save 2s ease-in-out;
+}
+@keyframes save {
+    0% {
+        background-color: transparent;
+    }
+    50% {
+        background-color: var(--off-green);
+    }
+    100% {
+        background-color: transparent;
+    }
+}

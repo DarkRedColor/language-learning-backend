@@ -1,0 +1,380 @@
+<div id="app" class="ui grid fourteen wide column">
+  <div class="row">
+    <div id="status-list" class="four wide column tree">
+      <div class="head-list">
+        <h1 id="adventure-h">Statuses</h1>
+        <div class="ui search">
+          <div class="ui icon input">
+            <input class="prompt" type="text" placeholder="Search ..." id="filterInput">
+            <i class="search icon"></i>
+          </div>
+        </div>
+        <button class="add ui basic button" id="add_status" @click="toggleAddStatus">
+          <i class="plus icon"></i>add new status
+        </button>
+        <!-- Dropdown -->
+        <div class="dropdown-status" :class="{active: toggleAddStatusOpen}">
+          <button class="add-exp" @click="createNew('xp')">Create new exp</button>
+          <button class="add-coin" @click="createNew('coins')">Create new Coin</button>
+        </div>
+      </div>
+      <!-- EXP list -->
+        <draggable v-model="exp" tag="div" @start="drag=true" @end="drag=false" id="filterList" class="ui buttons fluid ordered results">
+          <div class="ui left labeled button stat-exp adv" v-for="(exp, index) in expData" :key="exp.id"
+               draggable="true"
+               @dragstart="dragStart(index)"
+               @dragenter="dragEnter(index)"
+               @dragover.prevent
+               @drop="drop"
+               @dragend="dragEnd"
+               :class="{ 'drag-placeholder': index === dropIndex, 'check': index === selectedExpIndex }">
+            <a href="#" class="ui basic label" :class="{ 'highlighted': isItemMoved }">
+              <span></span>
+              <p>{{ exp.name_en }}</p>
+            </a>
+            <button class="ui icon button exp-edit" :id="exp.id" @click="showExpContent(index, exp.id)">
+              <i class="edit outline icon"></i>
+            </button>
+            <button class="ui icon button exp-hide" :class="exp.is_deleted ? 'lock' : 'un-lock'" :id="exp.id"
+                    @click="toggleExpLockState(exp,index) ,exp.is_deleted ? lockExp(exp.id) : unlockExp(exp.id)" data-index="index">
+              <i :class="exp.is_deleted ? 'eye slash icon' : 'eye icon'"></i>
+            </button>
+          </div>
+        </draggable>
+      <!-- COIN list -->
+      <draggable v-model="coin" tag="div" @start="drag=true" @end="drag=false" id="filterList" class="ui buttons fluid ordered results">
+        <div class="ui left labeled button stat-coin adv" v-for="(coin, index) in coinData" :key="coin.id"
+             draggable="true"
+             @dragstart="coinDragStart(index)"
+             @dragenter="coinDragEnter(index)"
+             @dragover.prevent
+             @drop="coinDrop"
+             @dragend="dragEnd"
+             :class="{ 'drag-placeholder': index === coinDropIndex, 'check': index === selectedCoinIndex }">
+          <a href="#" class="ui basic label" :class="{ 'highlighted': isCoinMoved }">
+            <span></span>
+            <p>{{ coin.name_en }}</p>
+          </a>
+          <button class="ui icon button exp-edit" :id="coin.id" @click="showCoinContent(index, coin.id)">
+            <i class="edit outline icon"></i>
+          </button>
+          <button class="ui icon button coin-hide" :class="coin.is_deleted ? 'lock' : 'un-lock'" :id="coin.id"
+                  @click="toggleCoinLockState(coin,index) ,coin.is_deleted ? lockCoin(coin.id) : unlockCoin(coin.id)" data-index="index">
+            <i :class="coin.is_deleted ? 'eye slash icon' : 'eye icon'"></i>
+          </button>
+        </div>
+      </draggable>
+    </div>
+    <div id="edit" class="twelve wide column" v-if="showEdit">
+      <div class="edit">
+        <h1>Edit</h1>
+        <div class="search-area stat-exp">
+          <h3>EXP</h3>
+        </div>
+        <div class="edit-area adventure">
+          <form class="ui form" >
+            <div class="two fields">
+              <div class="ui field">
+                <!--name status-->
+                <div class="ui field accordion">
+                  <div class="title inputs active">
+                    <div class="field main-local">
+                      <label>Name Status:</label>
+                      <textarea class="textarea" rows="2"
+                                name="name_en"
+                                v-model="expData[selectedExpIndex].name_en"
+                                @input="handleExpChanges"></textarea>
+                      <div class="ui label lang-iso">EN
+                        <i class="chevron down icon"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="content field inputs active">
+                    <template v-for="(lang, key) in expData[selectedExpIndex]">
+                      <div class="field" v-if="(key.startsWith('name_') && key !== 'name_en')">
+                        <textarea class="textarea" rows="2" :name="key"
+                                  v-model="expData[selectedExpIndex][key]"
+                                  :dir="key.includes('ar-AE') ? 'rtl' : 'ltr'"
+                                  @input="handleExpChanges"
+                        >{{ key }}</textarea>
+                        <div class="ui label lang-iso" >{{ key.substring(key.lastIndexOf('_') + 1) }}</div>
+                      </div>
+                    </template>
+                  </div>
+                </div>
+                <!--image upload-->
+                <div class="ui filed">
+                  <div class="inline field file">
+                    <label id="dropped">
+                      <input type="file" name="image" accept="image/png" ref="fileInput"
+                             v-model="expData[selectedExpIndex].image"
+                             @change="handleImageChange"
+                             onchange="previewFile(this)" placeholder="IMG">
+                      <i class="upload icon">
+                        <img class="previewImg" data-value=""
+                             :src="`${expData[selectedExpIndex].image}_S.webp`" ref="previewImage"/>
+                      </i>
+                      <a href="#" class="dis-img" onclick="removeImg()" @click="removeImg" id="del-img"><i class="close icon"></i></a>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="ui field">
+                <!--description-->
+                <div class="ui field accordion">
+                  <div class="title inputs active">
+                    <div class="field main-local">
+                      <label>Description:</label>
+                      <textarea class="textarea" rows="2"
+                                name="description_en"
+                                v-model="expData[selectedExpIndex].description_in_profile_en"
+                                @input="handleExpChanges"></textarea>
+                      <div class="ui label lang-iso">EN
+                        <i class="chevron down icon"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="content field inputs active">
+                    <template v-for="(lang, key) in expData[selectedExpIndex]">
+                      <div class="field" v-if="(key.startsWith('description_in_profile_') && key !== 'description_in_profile_en')">
+                        <textarea class="textarea" rows="2" :name="key"
+                                  v-model="expData[selectedExpIndex][key]"
+                                  :dir="key.includes('ar-AE') ? 'rtl' : 'ltr'"
+                                  @input="handleExpChanges"
+                        >{{ key }}</textarea>
+                        <div class="ui label lang-iso" >{{ key.substring(key.lastIndexOf('_') + 1) }}</div>
+                      </div>
+                    </template>
+                  </div>
+                </div>
+                <!--motivation-->
+                <div class="ui field accordion">
+                  <div class="title inputs active">
+                    <div class="field main-local">
+                      <label>Motivation:</label>
+                      <textarea class="textarea" rows="2"
+                                name="motivational_text_en"
+                                v-model="expData[selectedExpIndex].motivational_text_en"
+                                @input="handleExpChanges"></textarea>
+                      <div class="ui label lang-iso">EN
+                        <i class="chevron down icon"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="content field inputs active">
+                    <template v-for="(lang, key) in expData[selectedExpIndex]">
+                      <div class="field" v-if="(key.startsWith('motivational_text_') && key !== 'motivational_text_en')">
+                        <textarea class="textarea" rows="2" :name="key"
+                                  v-model="expData[selectedExpIndex][key]"
+                                  :dir="key.includes('ar-AE') ? 'rtl' : 'ltr'"
+                                  @input="handleExpChanges"
+                        >{{ key }}</textarea>
+                        <div class="ui label lang-iso" >{{ key.substring(key.lastIndexOf('_') + 1) }}</div>
+                      </div>
+                    </template>
+                  </div>
+                </div>
+              </div>
+            </div>
+              <div class="buttons action-buttons">
+                <button type="button" class="positive ui button save" :disabled="isSaveDisabled"
+                        @click="handleSaveClick">SAVE</button>
+                <button class="grey ui button discard" :disabled="isSaveDisabled" type="button" @click="showAlertDiscard = true" >DISCARD</button>
+                <button type="button" class="negative ui button" @click="showConfirmationDialogExp = true">DELETE</button>
+              </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div id="edit" class="twelve wide column" v-if="showCoinEdit">
+      <div class="edit">
+        <h1>Edit</h1>
+        <div class="search-area stat-coin">
+          <h3>Coin</h3>
+        </div>
+        <div class="edit-area adventure">
+          <form class="ui form" >
+            <div class="two fields">
+              <div class="ui field">
+                <!--name status-->
+                <div class="ui field accordion">
+                  <div class="title inputs active">
+                    <div class="field main-local">
+                      <label>Name Status:</label>
+                      <textarea class="textarea" rows="2"
+                                name="name_en"
+                                v-model="coinData[selectedCoinIndex].name_en"
+                                @input="handleCoinChanges"></textarea>
+                      <div class="ui label lang-iso">EN
+                        <i class="chevron down icon"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="content field inputs active">
+                    <template v-for="(lang, key) in coinData[selectedCoinIndex]">
+                      <div class="field" v-if="(key.startsWith('name_') && key !== 'name_en')">
+                        <textarea class="textarea" rows="2" :name="key"
+                                  v-model="coinData[selectedCoinIndex][key]"
+                                  :dir="key.includes('ar-AE') ? 'rtl' : 'ltr'"
+                                  @input="handleCoinChanges"
+                        >{{ key }}</textarea>
+                        <div class="ui label lang-iso" >{{ key.substring(key.lastIndexOf('_') + 1) }}</div>
+                      </div>
+                    </template>
+                  </div>
+                </div>
+                <!--image upload-->
+                <div class="ui filed">
+                  <div class="inline field file">
+                    <label id="dropped">
+                      <input type="file" name="image" accept="image/png" ref="fileInput"
+                             v-model="coinData[selectedCoinIndex].image"
+                             @change="coinHandleImageChange"
+                             onchange="previewFile(this)" placeholder="IMG">
+                      <i class="upload icon">
+                        <img class="previewImg" data-value=""
+                             :src="`${coinData[selectedCoinIndex].image}_S.webp`" ref="previewImage"/>
+                      </i>
+                      <a href="#" class="dis-img" onclick="removeImg()" @click="coinRemoveImg" id="del-img"><i class="close icon"></i></a>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="ui field">
+                <!--description-->
+                <div class="ui field accordion">
+                  <div class="title inputs active">
+                    <div class="field main-local">
+                      <label>Description:</label>
+                      <textarea class="textarea" rows="2"
+                                name="description_en"
+                                v-model="coinData[selectedCoinIndex].description_in_profile_en"
+                                @input="handleCoinChanges"></textarea>
+                      <div class="ui label lang-iso">EN
+                        <i class="chevron down icon"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="content field inputs active">
+                    <template v-for="(lang, key) in coinData[selectedCoinIndex]">
+                      <div class="field" v-if="(key.startsWith('description_in_profile_') && key !== 'description_in_profile_en')">
+                        <textarea class="textarea" rows="2" :name="key"
+                                  v-model="coinData[selectedCoinIndex][key]"
+                                  :dir="key.includes('ar-AE') ? 'rtl' : 'ltr'"
+                                  @input="handleCoinChanges"
+                        >{{ key }}</textarea>
+                        <div class="ui label lang-iso" >{{ key.substring(key.lastIndexOf('_') + 1) }}</div>
+                      </div>
+                    </template>
+                  </div>
+                </div>
+                <!--motivation-->
+                <div class="ui field accordion">
+                  <div class="title inputs active">
+                    <div class="field main-local">
+                      <label>Motivation:</label>
+                      <textarea class="textarea" rows="2"
+                                name="motivational_text_en"
+                                v-model="coinData[selectedCoinIndex].motivational_text_en"
+                                @input="handleCoinChanges"></textarea>
+                      <div class="ui label lang-iso">EN
+                        <i class="chevron down icon"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="content field inputs active">
+                    <template v-for="(lang, key) in coinData[selectedCoinIndex]">
+                      <div class="field" v-if="(key.startsWith('motivational_text_') && key !== 'motivational_text_en')">
+                        <textarea class="textarea" rows="2" :name="key"
+                                  v-model="coinData[selectedCoinIndex][key]"
+                                  :dir="key.includes('ar-AE') ? 'rtl' : 'ltr'"
+                                  @input="handleCoinChanges"
+                        >{{ key }}</textarea>
+                        <div class="ui label lang-iso" >{{ key.substring(key.lastIndexOf('_') + 1) }}</div>
+                      </div>
+                    </template>
+                  </div>
+                </div>
+              </div>
+            </div>
+              <div class="buttons action-buttons">
+                <button type="button" class="positive ui button save" :disabled="isSaveDisabled"
+                        @click="coinHandleSaveClick">SAVE</button>
+                <button class="grey ui button discard" :disabled="isSaveDisabled" type="button" @click="showAlertDiscard = true" >DISCARD</button>
+                <button type="button" class="negative ui button" @click="showConfirmationDialogCoin = true">DELETE</button>
+              </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal confirmation EXP dialog -->
+  <div class="ui dimmer modals page transition" :class="{ 'active': showConfirmationDialogExp }">
+    <div class="ui basic modal state-hidden transition" style="display: block;">
+      <div class="ui icon header">
+        <i class="massive trash alternate icon"></i>
+      </div>
+      <div class="content">
+        <h2>This <u>EXP</u> will be permanently deleted.</h2>
+        <h3>This action is irreversible!</h3>
+      </div>
+      <div class="actions">
+        <div class="ui red cancel inverted button" @click="cancelRemoveConfirmation">
+          <i class="remove icon"></i>
+          Cancel
+        </div>
+        <div class="ui green ok inverted button" @click="deleteExp(id)">
+          <i class="checkmark icon"></i>
+          Confirm
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal confirmation COIN dialog -->
+  <div class="ui dimmer modals page transition" :class="{ 'active': showConfirmationDialogCoin }">
+    <div class="ui basic modal state-hidden transition" style="display: block;">
+      <div class="ui icon header">
+        <i class="massive trash alternate icon"></i>
+      </div>
+      <div class="content">
+        <h2>This <u>Coin</u> will be permanently deleted.</h2>
+        <h3>This action is irreversible!</h3>
+      </div>
+      <div class="actions">
+        <div class="ui red cancel inverted button" @click="cancelRemoveConfirmation">
+          <i class="remove icon"></i>
+          Cancel
+        </div>
+        <div class="ui green ok inverted button" @click="deleteCoin(id)">
+          <i class="checkmark icon"></i>
+          Confirm
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal discard changes -->
+  <div class="ui dimmer modals page transition" :class="{ 'active': showAlertDiscard }">
+    <div class="ui basic modal state-hidden transition" style="display: block;">
+      <div class="ui icon header">
+        <i class="massive trash alternate icon"></i>
+      </div>
+      <div class="content">
+        <h2>Have not saved data</h2>
+        <h3>You are sure want to continue?</h3>
+      </div>
+      <div class="actions">
+        <div class="ui red cancel inverted button" @click="cancelAlertDiscard">
+          <i class="remove icon"></i>
+          Cancel
+        </div>
+        <div class="ui green ok inverted button" @click="confirmAlertDiscard">
+          <i class="checkmark icon"></i>
+          Confirm
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

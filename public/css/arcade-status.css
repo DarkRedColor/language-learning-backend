@@ -1,0 +1,183 @@
+
+.data .category.arcade .column.list .action-buttons{
+    margin-bottom: 0;
+}
+.data .category.arcade .column.list .list{
+    padding-top: 1rem;
+}
+.category.arcade .package.param .pack-name {
+    position: relative;
+}
+.category.arcade .package.param:hover .pack-name:before{
+    opacity: 1;
+    top: -65%;
+}
+.category.arcade .package.param .pack-name:before{
+    /*content: "Lifetime:"attr(tooltip-lifetime) ", Price:" attr(tooltip-price);*/
+    content: attr(tooltip-data);
+    position: absolute;
+    top: -35%;
+    left: 0;
+    white-space: nowrap;
+    background: var(--param);
+    color: #7d7d7d;
+    font-size: 65%;
+    padding: .2rem .5rem;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: all .3s ease;
+    box-shadow: var(--shadow);
+    border-radius: 0.5rem;
+    border: 1px solid #fff;
+}
+.category.daily .column.list .list{
+    height: 100%;
+    background: #fff;
+}
+.list.queue{
+    /*opacity: 1;*/
+    transition: all .3s ease;
+}
+.list.queue.day-open{
+    margin-left: -100%;
+    opacity: 0;
+}
+.data .list .param{
+    position: relative;
+}
+.vip-packages .list > *{
+    counter-increment: vipPackages;
+}
+.vip-packages .package:before{
+    content: counter(vipPackages);
+    position: absolute;
+    left: 0;
+    height: 100%;
+    width: 2rem;
+    border-right:1px solid var(--disabled);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.daily-queue .list > *{
+    counter-increment: dailyQueue;
+}
+.daily-queue .package:before{
+    content: counter(dailyQueue);
+    position: absolute;
+    left: 0;
+    height: 100%;
+    width: 2rem;
+    border-right:1px solid var(--disabled);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.daily-queue .daily .reward-info{
+    font-size: 0.9rem;
+    color: #8c8c8c;
+    margin-left: 1.5rem;
+}
+.action-buttons.full-w{
+    width: 50%;
+    margin-left: 50%;
+}
+.arcade .column.option{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+}
+.arcade .column.option .param input{
+    text-align: center;
+    outline: none;
+}
+.arcade .column.option .param.period input{
+    max-width: 1.5rem;
+}
+.arcade .column.option .info{
+    line-height: 1rem;
+}
+.arcade .column.option .info span{
+    opacity: .7;
+    font-size: 75%;
+}
+.modal .modal-content > span{
+    /*display: grid;*/
+    /*grid-template-columns: auto 1fr auto;*/
+    /*gap: .5rem;*/
+    /*align-items: center;*/
+    background: var(--param);
+    padding: .5rem 1rem;
+    border-radius: .5rem;
+    text-align: left;
+}
+.modal input[type="number"]{
+    width: 3rem;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    border-bottom: 1px solid #333;
+    outline: none;
+}
+.modal .modal-content input[type="text"]{
+    font-size: 1.5rem;
+    font-weight: 400;
+    border: none;
+    border-bottom: 1px solid #333;
+    border-radius: 0;
+    background: transparent;
+    outline: none;
+}
+.modal .error-message{
+    color: var(--delete);
+    font-size: 75%;
+}
+.modal input[type="text"]{
+    border: 1px solid #b9b9b9;
+    padding: .5rem 1rem;
+    border-radius: 0.5rem;
+    background: var(--info);
+    font-weight: 600;
+}
+.modal input[type="text"]::placeholder{
+    color: #777;
+}
+.modal-button[disabled]{
+    cursor: not-allowed;
+    opacity: .5;
+}
+.modal .input-price::placeholder,
+.modal .lifetime-time input[type="number"]::placeholder{
+    color: #777;
+    font-size: 60%;
+}
+.modal .lifetime-time .lifetime-hour{
+    text-align: right;
+}
+.modal .input-price{
+    text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

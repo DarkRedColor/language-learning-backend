@@ -1,0 +1,28 @@
+{
+  "pageNumber": 1,
+  "dictionaryCode": "english",
+  "resultNumber": 4,
+  "results": [
+    {
+      "entryLabel": "hello exclamation",
+      "entryUrl": "https://www.oxfordlearnersdictionaries.com/definition/english/hello_1",
+      "entryId": "hello_1"
+    },
+    {
+      "entryLabel": "hello",
+      "entryUrl": "https://www.oxfordlearnersdictionaries.com/definition/english/hallo",
+      "entryId": "hallo"
+    },
+    {
+      "entryLabel": "Hello!",
+      "entryUrl": "https://www.oxfordlearnersdictionaries.com/definition/english/hello_2",
+      "entryId": "hello_2"
+    },
+    {
+      "entryLabel": "golden hello noun",
+      "entryUrl": "https://www.oxfordlearnersdictionaries.com/definition/english/golden-hello",
+      "entryId": "golden-hello"
+    }
+  ],
+  "currentPageIndex": 1
+}

@@ -1,0 +1,391 @@
+<section class="data">
+  <section class="category arcade">
+    <h1 class="global-category-name">Arcade reward</h1>
+    <template v-if="dataArcade">
+      <div class="column option">
+        <p class="info ">Maximum attempts</p>
+        <div class="param">
+          <button @click="decrementAmount('max_amount')" class="neg">-</button>
+          <input @change="handleChange('max_amount')" maxlength="3" size="3" type="text" v-model="dataArcade.arcade.max_amount"/>
+          <button @click="incrementAmount('max_amount')" class="pos">+</button>
+        </div>
+      </div>
+      <div class="column option">
+        <p class="info ">Updating attempts<br><span>(display in hours)</span></p>
+        <div class="param">
+          <button @click="decrementAmount('time_for_increment')" class="neg">-</button>
+          <input @change="handleChange('time_for_increment')" maxlength="3" size="3" type="text" v-model="dataArcade.arcade.time_for_increment"/>
+          <button @click="incrementAmount('time_for_increment')" class="pos">+</button>
+        </div>
+      </div>
+      <div class="column option">
+        <p class="info ">Reward for passed game</p>
+        <div class="param ">
+          <button @click="decrementAmount('reward')" class="neg">-</button>
+          <input @change="handleChange('reward')" maxlength="3" size="3" type="text" v-model="dataArcade.arcade.reward"/>
+          <button @click="incrementAmount('reward')" class="pos">+</button>
+        </div>
+      </div>
+      <div class="column option">
+        <p class="info ">Time to pass game<br><span>(display in minutes)</span></p>
+        <div class="param ">
+          <button @click="decrementAmount('time_to_pass')" class="neg">-</button>
+          <input @change="handleChange('time_to_pass')" maxlength="3" size="3" type="text" v-model="dataArcade.arcade.time_to_pass"/>
+          <button @click="incrementAmount('time_to_pass')" class="pos">+</button>
+        </div>
+      </div>
+      <div class="action-buttons full-w">
+        <button :disabled="!arcadeSettings" @click="postSettings" class="save">Save</button>
+      </div>
+    </template>
+    <h1 class="global-category-name">VIP package</h1>
+    <div class="vip-packages column list">
+      <div class="action-buttons">
+        <button @click="vipPackageModal = true" class="save">Add package</button>
+      </div>
+      <div class="list" v-if="dataArcade">
+        <div class="package param" v-for="package in dataArcade.products" >
+<!--          <p class="pack-name" :tooltip-lifetime="package.lifetime" :tooltip-price="package.price">{{package.name}}</p>-->
+          <p class="pack-name" :tooltip-data="getTooltipData(package)">
+            {{ package.name }}
+          </p>
+          <div class="btns">
+            <div class="checkbox">
+              <input value="private" name="switch" :id="`switchVip-${package.product_id}`" type="checkbox" class="switch"
+                     v-model="package.is_active"
+                     @click="checkPackageActive(package.product_id, package.name, package.price, package.lifetime, !package.is_active)">
+              <label :for="`switchVip-${package.product_id}`">
+                <span class="switch-x-text">This is </span>
+                <span class="switch-x-toggletext">
+                    <span class="switch-x-unchecked"><span class="switch-x-hiddenlabel">Unchecked: </span>Disabled</span>
+                    <span class="switch-x-checked"><span class="switch-x-hiddenlabel">Checked: </span>Enabled</span>
+                  </span>
+              </label>
+            </div>
+            <a href="#" @click="openEditVipPackagesModal(package.product_id, package.name, getHoursEdit(package), getMinuteEdit(package), package.price, package.is_active)" class="edit-pack"><i class="fa-solid fa-pen-to-square"></i></a>
+            <a href="#" @click="openDeleteVipPackageModal(package.product_id, package.name)" class="del-pack"><i class="fa-solid fa-trash-can"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="category daily">
+    <h1 class="global-category-name">Daily queue</h1>
+    <div class="column list">
+      <div class="action-buttons">
+        <template v-if="dailyQueue">
+          <button @click="addDayModal = true" class="save">Add day</button>
+        </template>
+        <template v-else>
+          <button @click="addQueueModal = true" class="save">Add queue</button>
+        </template>
+      </div>
+      <div class="daily-queue">
+        <div class="list queue" :class="{'day-open' : dailyQueue}" v-if="dataArcade" >
+          <div :id="daily.promotion_id" class="package param"
+               :key="daily.promotion_id"
+               v-for="daily in dataArcade.daily_reward_promotions">
+            <p class="pack-name">{{ daily.name }}</p>
+            <div class="btns">
+              <div class="checkbox">
+                <input value="private" name="switch" :id="`switch-${daily.promotion_id}`" type="checkbox" class="switch"
+                       v-model="daily.is_active"
+                       @click="checkActive(daily.promotion_id, daily.name, !daily.is_active)">
+                <label :for="`switch-${daily.promotion_id}`">
+                  <span class="switch-x-text">This is </span>
+                  <span class="switch-x-toggletext">
+                    <span class="switch-x-unchecked"><span class="switch-x-hiddenlabel">Unchecked: </span>Disabled</span>
+                    <span class="switch-x-checked"><span class="switch-x-hiddenlabel">Checked: </span>Enabled</span>
+                  </span>
+                </label>
+              </div>
+              <a href="#" @click="openEditDailyModal(daily.promotion_id, daily.name, daily.is_active)" class="edit-pack"><i class="fa-solid fa-pen-to-square"></i></a>
+              <a href="#" @click="openDeleteQueueModal(daily.promotion_id, daily.name)" class="del-pack"><i class="fa-solid fa-trash-can"></i></a>
+              <a href="#" @click="getRewards(daily.promotion_id), handleDaily" class="in-pack"><i class="fa-solid fa-angle-right"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="list daily" v-if="dataRewards">
+          <div :id="reward.day_id" class="package param" v-for="reward in dataRewards">
+            <p class="pack-name">Day - {{reward.day}} <span class="reward-info">{{reward.reward}} tokens reward</span></p>
+            <div class="btns">
+              <a href="#" @click="openEditRewardModal(reward.day_id, reward.day, reward.reward)" class="edit-pack"><i class="fa-solid fa-pen-to-square"></i></a>
+              <a href="#" @click="openDeleteRewardModal(reward.day_id, reward.day, reward.reward)" class="del-pack"><i class="fa-solid fa-trash-can"></i></a>
+              <a href="#" @click="handleDaily" class="in-pack"><i class="fa-solid fa-angle-left"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</section>
+<div :class="{ save: dataSaved }" class="save-info">data saved</div>
+
+<!-- delete Queue confirmation modal -->
+<div class="modal" v-if="deleteQueueModal">
+  <div class="modal-content">
+    <h2>Delete from queue <strong>"{{this.name}}"</strong> and his data</h2>
+    <h2>Are you sure ?</h2>
+    <div class="action-buttons">
+      <button @click="deleteFromQueue(id)" class="modal-button accept">Delete</button>
+      <button @click="deleteQueueModal = false" class="modal-button cancel">Cancel</button>
+    </div>
+  </div>
+</div>
+<!-- delete REWARD confirmation modal -->
+<div class="modal" v-if="dayDeleteModal">
+  <div class="modal-content">
+    <h2>Delete <strong>{{this.day}}day</strong> with <strong>{{this.reward}}reward</strong></h2>
+    <h2>Are you sure ?</h2>
+    <div class="action-buttons">
+      <button @click="deleteFromDay(id)" class="modal-button accept">Delete</button>
+      <button @click="dayDeleteModal = false" class="modal-button cancel">Cancel</button>
+    </div>
+  </div>
+</div>
+<!-- Add new QUEUE modal -->
+<div class="modal" v-if="addQueueModal">
+  <div class="modal-content">
+    <h2>Add name for new <strong>Queue</strong> in daily list</h2>
+    <input type="text" name="" placeholder="new name" v-model="addToQueue.name" @input="updateAddToQueue">
+    <input type="text" name="" placeholder="new name" v-model="addToQueue.is_active" hidden>
+    <div class="action-buttons">
+      <button @click="putNewQueue()" class="modal-button accept">Save</button>
+      <button @click="addQueueModal = false" class="modal-button cancel">Cancel</button>
+    </div>
+  </div>
+</div>
+<!-- Edit QUEUE modal -->
+<div class="modal" v-if="editDailyModal">
+  <div class="modal-content">
+    <h2>Edit name: <strong>{{this.name}}</strong> from daily list</h2>
+    <input type="text" name="" :placeholder="this.name" v-model="this.name">
+    <div class="action-buttons">
+      <button @click="postToQueue(id, name, activity)" class="modal-button accept">Save</button>
+      <button @click="editDailyModal = false" class="modal-button cancel">Cancel</button>
+    </div>
+  </div>
+</div>
+<!-- Add new DAY modal -->
+<div class="modal" v-if="addDayModal">
+  <div class="modal-content">
+      <h2>Add new day for <strong>Rewards</strong> list</h2>
+    <span>
+      <label>Number of days:</label>
+<!--      <input type="text" name="" placeholder="new name" v-model="addToQueue.is_active" hidden>-->
+      <input type="number"
+              v-model="numberOfDays"
+              @input="validateNumberOfDays"
+              min="1"
+              max="31">
+      <span v-if="invalidNumberOfDays" class="error-message">Enter a number between 1 and 31.</span>
+    </span>
+    <span>
+      <label>Number of tokens:</label>
+      <input type="number"
+              v-model="numberOfTokens"
+              @input="validNumberOfTokens"
+              min="1"
+              max="100">
+      <span v-if="invalidNumberOfTokens" class="error-message">Enter a number between 1 and 100.</span>
+    </span>
+    <div class="action-buttons">
+      <button @click="putNewDay()" :disabled="invalidNumberOfDays || invalidNumberOfTokens" class="modal-button accept" >Accept</button>
+      <button @click="addDayModal = false" class="modal-button cancel">Cancel</button>
+    </div>
+  </div>
+</div>
+<!-- Edit DAY modal -->
+<div class="modal" v-if="editDayModal">
+  <div class="modal-content">
+      <h2><strong>Edit day</strong></h2>
+    <span>
+      <label>Number of days:</label>
+<!--      <input type="text" name="" placeholder="new name" v-model="addToQueue.is_active" hidden>-->
+      <input type="number"
+              v-model="this.day"
+              @input="validateThisDays"
+              min="1"
+              max="31">
+      <span v-if="invalidNumberOfDays" class="error-message">Enter a number between 1 and 31.</span>
+    </span>
+    <span>
+      <label>Number of tokens:</label>
+      <input type="number"
+              v-model="this.reward"
+              @input="validateThisTokens"
+              min="1"
+              max="100">
+      <span v-if="invalidNumberOfTokens" class="error-message">Enter a number between 1 and 100.</span>
+    </span>
+    <div class="action-buttons">
+      <button @click="editDay(id)" :disabled="invalidNumberOfDays || invalidNumberOfTokens" class="modal-button accept" >Accept</button>
+      <button @click="editDayModal = false" class="modal-button cancel">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add package modal -->
+<div class="modal" v-if="vipPackageModal">
+  <div class="modal-content">
+      <h2><strong>Add new Package</strong></h2>
+    <span>
+      <label>Package name:</label>
+      <input type="text" placeholder="package name"
+              v-model="addToPackage.name"
+              @input="updateAddToPackage">
+      <span v-if="invalidPackageName" class="error-message">Enter name between 1 and 255 character</span>
+    </span>
+    <span>
+      <label>Lifetime: </label>
+      <span class="lifetime-time">
+        <input type="number"
+               placeholder="hour"
+               class="lifetime-hour"
+               v-model="addToPackage.lifetimeHour"
+               @input="updateAddToPackage"
+               min="1"
+               max="23">
+      <psan> . </psan>
+      <input type="number"
+             placeholder="min"
+             class="lifetime-minutes"
+             v-model="addToPackage.lifetimeMinute"
+             @input="updateAddToPackage"
+             min="1"
+             max="59">
+      <span v-if="invalidPackageTime" class="error-message">Enter a number correct time</span>
+      </span>
+    </span>
+    <span>
+      <label>Price:</label>
+      <input type="number" class="input-price"
+              placeholder="< 100"
+              v-model="addToPackage.price"
+              @input="updateAddToPackage"
+              min="0"
+              max="100">
+      <span v-if="invalidPrice" class="error-message">Enter a number between 1 and 100.</span>
+    </span>
+    <div class="action-buttons">
+      <button @click="putVipPackage"
+              :disabled="!editVipPackageChange || invalidPackageName || invalidPrice || invalidPackageTime" class="modal-button accept" >Accept</button>
+      <button @click="vipPackageModal = false" class="modal-button cancel">Cancel</button>
+    </div>
+  </div>
+</div>
+<!-- Edit package modal -->
+<div :id="this.id" class="modal" v-if="vipEditPackageModal" :key="this.id">
+  <div class="modal-content">
+      <h2><small>You're modifying the </small><strong>{{this.name}}</strong></h2>
+    <span>
+      <label>Package name:</label>
+      <input type="text"
+              :placeholder="this.name"
+              v-model="this.name"
+              @input="validPackageName">
+      <span v-if="invalidPackageName" class="error-message">Enter name between 1 and 255 character</span>
+    </span>
+    <span>
+      <label>Lifetime: </label>
+      <span class="lifetime-time">
+        <input type="number"
+               :placeholder="this.hour"
+               class="lifetime-hour"
+               v-model="this.hour"
+               @input="validPackageTime"
+               min="1"
+               max="23">
+      <psan> : </psan>
+      <input type="number"
+             :placeholder="this.minute"
+             class="lifetime-minutes"
+             v-model="this.minute"
+             @input="validPackageTime"
+             min="1"
+             max="59">
+      <span v-if="invalidPackageTime" class="error-message">Enter a number correct time</span>
+      </span>
+    </span>
+    <span>
+      <label>Price:</label>
+      <input type="number" class="input-price"
+              :placeholder="this.price"
+              @input="validPrice"
+              v-model="this.price"
+              min="1"
+              max="3">
+      <span v-if="invalidPrice" class="error-message">Enter a number between 1 and 100.</span>
+    </span>
+    <div class="action-buttons">
+      <button @click="editVipPackage(this.id, this.name, this.price, this.activity, this.hour, this.minute)"
+              :disabled="!editVipPackageChange || invalidPackageName || invalidPrice || invalidPackageTime"
+              class="modal-button accept" >Accept</button>
+      <button @click="vipEditPackageModal = false" class="modal-button cancel">Cancel</button>
+    </div>
+  </div>
+</div>
+<!-- delete Queue confirmation modal -->
+<div class="modal" v-if="deleteVipPackageModal">
+  <div class="modal-content">
+    <h2>Delete <strong>"{{this.name}}"</strong> from Vip Packages</h2>
+    <h2>Are you sure ?</h2>
+    <div class="action-buttons">
+      <button @click="deleteVipPackage(id)" class="modal-button accept">Delete</button>
+      <button @click="deleteVipPackageModal = false" class="modal-button cancel">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+    const pageUrls = window.location.href;
+    let serverName = document.querySelector('.server-name');
+    let logIn, energy, arcade, coins, ads, offer, gifts, users;
+
+    if (pageUrls.indexOf("localhost") > -1 || pageUrls.indexOf("stage") > -1) {
+        // ===== DEV server
+        serverName.innerHTML = 'DEV <span>server</span>';
+        logIn = 'https://prod-auth.langly.ai/api/accounts/login/';
+        arcade = 'https://prod-energy.langly.ai/api/energy/';
+        energy = 'https://prod-energy.langly.ai/api/energy/energy-parameters';
+        ads = 'https://prod-energy.langly.ai/api/energy/advertising-parameters';
+        coins = 'https://prod-energy.langly.ai/api/energy/coin-parameters/';
+        offer = 'https://prod-gateway.langly.ai/api/purchases/app-info/';
+        users = 'https://prod-auth.langly.ai/api/accounts/users/';
+        gifts = 'https://prod-energy.langly.ai/api/energy/accrual-coins-and-energy/';
+    } else if (pageUrls.indexOf("development") > -1) {
+        // ===== RC server
+        serverName.innerHTML = 'RC <span>server</span>';
+        // logIn = 'https://auth-microservice-release-candidate.langly.ai/api/accounts/login/';
+        // arcade = 'https://auth-microservice-release-candidate.langly.ai/api/energy/';
+        // energy = 'https://socks-microservice-release-candidate.langly.ai/api/energy/energy-parameters';
+        // ads = 'https://socks-microservice-release-candidate.langly.ai/api/energy/advertising-parameters';
+        // coins = 'https://socks-microservice-release-candidate.langly.ai/api/energy/coin-parameters/';
+        // offer = 'https://gateway-microservice-release-candidate.langly.ai/api/purchases/app-info/';
+        // users = 'https://auth-microservice-release-candidate.langly.ai/api/accounts/users/';
+        // gifts = 'https://socks-microservice-release-candidate.langly.ai/api/energy/accrual-coins-and-energy/';
+        logIn = 'https://prod-auth.langly.ai/api/accounts/login/';
+        arcade = 'https://prod-energy.langly.ai/api/energy/';
+        energy = 'https://prod-energy.langly.ai/api/energy/energy-parameters';
+        ads = 'https://prod-energy.langly.ai/api/energy/advertising-parameters';
+        coins = 'https://prod-energy.langly.ai/api/energy/coin-parameters/';
+        offer = 'https://prod-gateway.langly.ai/api/purchases/app-info/';
+        users = 'https://prod-auth.langly.ai/api/accounts/users/';
+        gifts = 'https://prod-energy.langly.ai/api/energy/accrual-coins-and-energy/';
+    } else if (pageUrls.indexOf("api") > -1) {
+        // ===== PROD server
+        serverName.innerHTML = 'PROD <span>server</span>';
+        logIn = 'https://auth-microservice-production.langly.ai/api/accounts/login/';
+        arcade = 'https://auth-microservice-production.langly.ai/api/energy/';
+        energy = 'https://socks-microservice-production.langly.ai/api/energy/energy-parameters';
+        ads = 'https://socks-microservice-production.langly.ai/api/energy/advertising-parameters';
+        coins = 'https://socks-microservice-production.langly.ai/api/energy/coin-parameters/';
+        offer = 'https://gateway-microservice-production.langly.ai/api/purchases/app-info/';
+        users = 'https://auth-microservice-production.langly.ai/api/accounts/users/';
+        gifts = 'https://socks-microservice-production.langly.ai/api/energy/accrual-coins-and-energy/';
+    }
+
+</script>

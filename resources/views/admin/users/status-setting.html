@@ -1,0 +1,113 @@
+<section class="data">
+  <section class="coins-category">
+    <!-- Global Coins -->
+    <div class="column">
+      <h1 class="global-category-name">EXP</h1>
+      <div class="global-coins" v-if="expData">
+        <p class="info category-name">Color: <span class="category-color" contenteditable="false">{{ expData.color }}</span></p>
+        <template v-for="(status, index) in expData.statuses">
+          <p class="info" :class="{ 'is-deleted': status.is_deleted }">{{ status.name_en }}</p>
+          <div class="param max-energy">
+            <button @click="expDecrementStatus(index), getExpIndex(index)" :disabled="expShouldDisable(index)" class="neg">-</button>
+            <input @change="status.changed = true; expChanged = true; getExpIndex(index)" :disabled="expShouldDisable(index)" type="number" v-model="status.trigger"/>
+            <button @click="expIncrementStatus(index), getExpIndex(index)" :disabled="expShouldDisable(index)" class="pos">+</button>
+          </div>
+        </template>
+        <div class="action-buttons">
+          <button :disabled="!expChanged" @click="expModal = true" class="save">Save</button>
+        </div>
+      </div>
+    </div>
+    <!-- Level capacity and reward settings -->
+    <div class="column">
+      <h1 class="global-category-name">Coins</h1>
+      <div class="global-coins" v-if="coinData">
+        <p class="info category-name">Color: <span class="category-color" contenteditable="false">{{ coinData.color }}</span></p>
+        <template v-for="(status, index) in coinData.statuses">
+          <p class="info" :class="{ 'is-deleted': status.is_deleted }" >{{ status.name_en }}</p>
+          <div class="param max-energy">
+            <button @click="coinDecrementStatus(index), getCoinIndex(index)" :disabled="coinShouldDisable(index)" class="neg">-</button>
+            <input @change="status.changed = true; coinChanged = true; getCoinIndex(index)" :disabled="coinShouldDisable(index)" type="number" v-model="status.trigger"/>
+            <button @click="coinIncrementStatus(index), getCoinIndex(index)" :disabled="coinShouldDisable(index)" class="pos">+</button>
+          </div>
+        </template>
+        <div class="action-buttons">
+          <button :disabled="!coinChanged" @click="coinModal = true" class="save">Save</button>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="column"></div>
+
+</section>
+
+<!-- confirmation EXP  -->
+<div class="modal" v-if="expModal">
+  <div class="modal-content">
+    <h2>Are you sure you want to save <strong>EXP settings</strong> changes?</h2>
+    <div class="action-buttons">
+      <button @click="postExp()" class="modal-button accept">Accept</button>
+      <button @click="expModal = false" class="modal-button cancel">Cancel</button>
+    </div>
+  </div>
+</div>
+<!-- end modal -->
+<!-- confirmation Coins  -->
+<div class="modal" v-if="coinModal">
+  <div class="modal-content">
+    <h2>Are you sure you want to save <strong>Coin setting</strong> changes?</h2>
+    <div class="action-buttons">
+      <button @click="postCoin()" class="modal-button accept">Accept</button>
+      <button @click="coinModal = false" class="modal-button cancel">Cancel</button>
+    </div>
+  </div>
+</div>
+<!-- end modal -->
+<!--actions info-->
+<div :class="{ save: dataSaved }" class="save-info">data saved</div>
+<script>
+    const pageUrls = window.location.href;
+    let pageName = document.querySelector('.toolbar h1');
+    let serverName = document.querySelector('.server-name');
+
+    let timestamp;
+    setInterval(() => {
+        timestamp = new Date().getTime();
+    }, 1000);
+
+    let logIn, status;
+
+    if (pageUrls.indexOf("users-data") > -1) {
+        pageName.textContent = 'Users & transactions';
+    } else if(pageUrls.indexOf("users-energy") > -1) {
+        pageName.textContent = 'Energy and Coins';
+    } else if(pageUrls.indexOf("exp") > -1){
+        pageName.textContent = 'EXP';
+    }else if(pageUrls.indexOf("status-settings") > -1){
+        pageName.textContent = 'Status Profile';
+    }
+
+    if (pageUrls.indexOf("localhost") > -1 || pageUrls.indexOf("stage") > -1) {
+        // ===== DEV server
+        serverName.innerHTML = 'DEV <span>server</span>';
+        // logIn = 'https://auth-microservice-development.langly.ai/api/accounts/login/';
+        // status = 'https://energy-microservice-development.langly.ai/api/energy/status-settings';
+        logIn = 'https://prod-auth.langly.ai/api/accounts/login/';
+        status = 'https://prod-energy.langly.ai/api/energy/status-settings';
+    } else if (pageUrls.indexOf("development") > -1) {
+        // ===== RC server
+        serverName.innerHTML = 'RC <span>server</span>';
+        // logIn = 'https://auth-microservice-release-candidate.langly.ai/api/accounts/login/';
+        // status = 'https://socks-microservice-release-candidate.langly.ai/api/energy/status-settings';
+        logIn = 'https://prod-auth.langly.ai/api/accounts/login/';
+        status = 'https://prod-energy.langly.ai/api/energy/status-settings';
+    } else if (pageUrls.indexOf("api") > -1) {
+        // ===== PROD server
+        serverName.innerHTML = 'PROD <span>server</span>';
+        // logIn = 'https://auth-microservice-production.langly.ai/api/accounts/login/';
+        // status = 'https://socks-microservice-production.langly.ai/api/energy/status-settings';
+        logIn = 'https://prod-auth.langly.ai/api/accounts/login/';
+        status = 'https://prod-energy.langly.ai/api/energy/status-settings';
+    }
+
+</script>
